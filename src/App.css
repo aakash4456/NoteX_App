@@ -1,0 +1,68 @@
+.custom-shadow {
+    transition: 0.3s ease-in-out;
+    box-shadow: 5px 5px 15px 1px rgba(91, 64, 64, 0.15),
+                -5px 5px 15px 1px rgba(91, 64, 64, 0.15);
+}
+.custom-shadow:hover {
+    box-shadow: 5px 5px 15px 1px rgba(201, 200, 199), 
+                -5px 5px 15px 1px rgba(201, 200, 199);
+}
+.NoteCard-shadow {
+    transition: 0.3s ease-in-out;
+    box-shadow: 5px 5px 15px 1px rgba(91, 64, 64, 0.15),
+                -5px 5px 15px 1px rgba(91, 64, 64, 0.15);
+}
+/* .NoteCard-shadow:hover {
+    box-shadow: 5px 5px 15px 1px rgba(201, 200, 199), 
+                -5px 5px 15px 1px rgba(201, 200, 199);
+} */
+
+.word-spacing-custom {
+    word-spacing: 15px; /* Adjust as needed */
+    line-height: 50px;
+}
+
+
+.note-card {
+    background-color: #F2EFF2;
+    border-width: 1px;
+    border-color: #1E3A8A; /* Equivalent to blue-950 */
+    transition: all 0.3s ease-in-out;
+    width: 160px;
+    height: 30vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 4px; /* Equivalent to p-1 */
+    border-radius: 1rem; /* Equivalent to rounded-2xl */
+    position: relative;
+    z-index: 0;
+    }
+
+.note-card:hover {
+    border-color: #EF4444; /* Equivalent to red-500 */
+    border-radius: 1rem; /* Ensuring smooth transition */
+    transform: scale(1.05);
+}
+
+/* Small screen (sm) adjustments */
+@media (min-width: 640px) {
+    .note-card {
+        min-width: 270px;
+        width: 270px;
+        height: 240px;
+    }
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(216, 216, 228, 0.2); /* Slight blue tint */
+    backdrop-filter: blur(2px); /* Optional blur effect */
+    z-index: 10; /* Ensure it's above the content but below the modal */
+}
+
+

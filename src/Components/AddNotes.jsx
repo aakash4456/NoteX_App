@@ -157,7 +157,10 @@ function AddNotes({MyNote}) {
                 <MdMoreVert
                   className={`absolute bg-gray-200 hover:bg-gray-400 rounded transition-all duration-300 ease-in-out transformc
                     ${ showNoteoptions ? "opacity-0 scale-0" : "opacity-100 scale-100" } `}
-                  onClick={ () => setShowNoteoptions(!showNoteoptions) }
+                    onClick = { () => {
+                      setShowNoteoptions(!showNoteoptions) 
+                      if(showLabelOptions === true) setShowLabelOptions(false);
+                    } }
                 />
                 <RxCross2
                   className={` bg-gray-200 hover:bg-gray-400 rounded transition-all duration-300 ease-in-out transform
@@ -169,15 +172,21 @@ function AddNotes({MyNote}) {
             {/* Note options when Triple Dot clicked */}
             {
               showNoteoptions && (
-                <div className='border-1 absolute right-1 top-6 bg-white border-[#949392] rounded-xl h-[120px] shadow-2xl'>
-                  <ul className='text-blue-950 h-[100%]'>
+                <div className='border-1 absolute right-1 top-7 bg-white border-[#949392] rounded-xl w-[200px] shadow-2xl text-blue-950 px-1 py-2'>
+                  <ul className='flex flex-col gap-2'>
                     <li
-                      className='cursor-pointer pl-1 pr-3 hover:bg-[#dbd7d5] transition duration-500 rounded-xl h-[25%]'
+                      className='cursor-pointer pl-3 hover:bg-[#dbd7d5] transition duration-500 rounded-xl h-[30px] '
                       onClick = { () => setShowLabelOptions(true) }
                     > Add Label </li>
-                    <li className='cursor-pointer pl-1 pr-3 hover:bg-[#dbd7d5] transition duration-500 rounded-xl h-[25%]'>Copy Note</li>
-                    <li className='cursor-pointer pl-1 pr-3 hover:bg-[#dbd7d5] transition duration-500 rounded-xl h-[25%]'>Make a Copy</li>
-                    <li className='cursor-pointer pl-1 pr-3 hover:bg-[#dbd7d5] transition duration-500 rounded-xl h-[25%]'>delete Note</li>
+                    <li
+                      className='cursor-pointer pl-3 hover:bg-[#dbd7d5] transition duration-500 rounded-xl h-[30px]'
+                    > Copy Note </li>
+                    <li
+                      className='cursor-pointer pl-3 hover:bg-[#dbd7d5] transition duration-500 rounded-xl h-[30px]'
+                    > Make a Copy </li>
+                    <li
+                      className='cursor-pointer pl-3 hover:bg-[#dbd7d5] transition duration-500 rounded-xl h-[30px]'
+                    > delete Note </li>
                   </ul>
                 </div>
               )
@@ -185,19 +194,22 @@ function AddNotes({MyNote}) {
             {/* Label options when Add Label Clicked */}
             {
               showLabelOptions && (
-                <div className='border-1 absolute right-1 top-6 bg-white border-[#949392] rounded-xl h-[120px] shadow-2xl'>
-                  <p>Label Note</p>
-                  <input
-                    type='text'
-                    placeholder='Enter Label'
-                    ref={inputLabelRef}
-                    value={noteLabel}
-                    onChange = { (e) => setNoteLabel(e.target.value) }
-                  />
+                <div className='border-1 absolute right-1 top-7 bg-white border-[#949392] rounded-xl shadow-2xl text-blue-950'>
+                  <div className='border-0 my-3 px-3'>
+                    <p>My Label</p>
+                    <input
+                      className = 'outline-none border-1 border-[#C9C8C7] rounded pl-1 mt-1 '
+                      type = 'text'
+                      placeholder='Default'
+                      ref = {inputLabelRef}
+                      value = {noteLabel}
+                      onChange = { (e) => setNoteLabel(e.target.value) }
+                    />
+                  </div>
                   {labelCollection.length > 0 && (
-                    <div>
+                    <div className='border-0 flex flex-col mb-3'>
                       {labelCollection.map((currentLabel, index) => (
-                        <div key={index} className="flex items-center gap-2 border-2">
+                        <div key={index} className="flex items-center gap-2 border-0 h-[35px] hover:bg-[#dbd7d5] transition duration-500 px-3 relative">
                           <input
                             type="checkbox"
                             value={currentLabel}
@@ -210,7 +222,11 @@ function AddNotes({MyNote}) {
                             onChange={ () => checkLabel(currentLabel, index) } 
                           />
                           <span>{currentLabel}</span>
-                          <input type='color'/>
+                          <input
+                            type='color'
+                            id='style1'
+                            value={'#172554'}
+                          />
                         </div>
                         ))
                       }
@@ -226,6 +242,7 @@ function AddNotes({MyNote}) {
               placeholder = 'Add Your task'
               value = {inputTask}
               onChange = { (e) => setInputTask(e.target.value) }
+              onClick={() => setShowLabelOptions(false) }
             />
             <div className='relative'>
               <button

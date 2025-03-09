@@ -66,3 +66,30 @@
 }
 
 
+
+
+#style1 {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    position: absolute;
+    right: 12px;
+    width: 20px;
+    height: 24px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+}
+
+/* Fixing pseudo-element syntax */
+#style1::-webkit-color-swatch {
+    border: 1px solid #37363e;
+    border-radius: 15px;
+    /* border: none; */
+}
+
+#style1::-moz-color-swatch {
+    border-radius: 15px;
+    border: none;
+}

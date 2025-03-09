@@ -3,8 +3,6 @@ import { IoIosMenu } from "react-icons/io";
 import { RxCross1 } from "react-icons/rx";
 
 function NavBar() {
-    // const [showLines, setShowLines] = useState(true);
-    // const [showCross, setShowCross] = useState(false);
     const [showMenu, setShowMenu] = useState(false);
 
     return (
@@ -14,7 +12,6 @@ function NavBar() {
             <div>
                 <h1 className='font-bold text-3xl '>NoteX</h1>
             </div>
-            
             {/* Nav Bar Options when Screen Size is greater than medium */}
             <div>
                 <ul className='hidden md:flex gap-12 text-blue-950'>
@@ -24,8 +21,7 @@ function NavBar() {
                     <li className='cursor-pointer'>Sign Up</li>
                 </ul>
             </div>
-            
-            {/* ************************ Third Method to handle Menu Options ************************ */}
+            {/* ************************ Third Method to handle Menu icon ************************ */}
             <div className="md:hidden relative w-10 h-10 flex justify-center items-center">
                 <IoIosMenu
                     className={`absolute text-3xl transition-all duration-300 ease-in-out transform ${
@@ -41,7 +37,6 @@ function NavBar() {
                 />
             </div>
         </div>
-
         {/* Mobile Menu - Positioned Absolutely Over Navbar */}
         {/* Nav Bar Options when Screen Size is less than medium */}
         {showMenu && (
@@ -58,55 +53,4 @@ function NavBar() {
     )
 }
 
-export default NavBar
-
-// ************************ First Method ************************
-// pre Designed Methad to handle Menu bar icon
-// {
-//     showLines && (
-//         <div className='md:hidden'>
-//             <IoIosMenu className='text-3xl border-1 rounded'
-//             onClick={(e) => {
-//                 e.preventDefault();
-//                 setShowLines(false);
-//                 setShowCross(true);
-//                 setShowMenu(true);
-//             }}/>
-//         </div>
-// )}
-// {
-//     showCross && (
-//         <>
-//             <div className='md:hidden'>
-//                 <RxCross1 className='text-3xl border-1 rounded'
-//                 onClick={(e) => {
-//                     e.preventDefault();
-//                     setShowCross(false);
-//                     setShowMenu(false);
-//                     setShowLines(true);
-//                 }}/>
-//             </div>
-//         </>
-// )}
-
-// ************************ Second Method ************************
-{/* <div className='md:hidden'>
-        {(showMenu)
-            ? 
-                <RxCross1 className='text-3xl border-1 rounded transition duration-3000 ease-in-out'
-                    onClick={(e) => {
-                        e.preventDefault();
-                        setShowMenu(false);
-                        // setShowCross(false);
-                        // setShowLines(true);
-                    }}/> 
-            :   <IoIosMenu className='text-3xl border-1 rounded'
-                    onClick={(e) => {
-                        e.preventDefault();
-                        setShowMenu(true);
-                        // setShowLines(false);
-                        // setShowCross(true);
-                    }}/>
-        }
-    </div> 
-*/}
+export default NavBar ;

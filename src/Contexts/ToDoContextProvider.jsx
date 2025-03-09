@@ -3,31 +3,46 @@ import { useState, useEffect } from 'react';
 import ToDoContext from './ToDoContext';
 
 function ToDoContextProvider ({children}) {
-    const storageKey = "NotesCollection"
+    const storeNotes = "NotesCollection"
+    const storeLabels = "LabelCollection"
 
-    const [showPopup, setShowPopup] = useState(false);
+    const [showCreatingNote, setShowCreatingNote] = useState(false);
     const [showNoteCard, setShowNoteCard] = useState(false);
     const [boldtext, setBoldtext] = useState(false);
     const [italicText, setItalicText] = useState(false);
     const [underlineText, setUnderlineText] = useState(false);
     const [DateNow, setDateNow] = useState('');
     const [editcurNote, setEditcurNote] = useState('');
-    
-    const [notesCollection, setNotesCollection] = useState(() => {
-        const RawData = localStorage.getItem(storageKey);
+
+    const [labelCollection, setLabelCollection] = useState(() => {
+        const RawData = localStorage.getItem(storeLabels);
         if(RawData === null){
-            console.log("in if");
-            console.log(RawData);
+            // console.log("in if");
+            // console.log(RawData);
             return [];
         } else {
-            console.log("in else");
-            console.log(RawData);
+            // console.log("in else");
+            // console.log(RawData);
+            return JSON.parse(RawData) ;
+        }
+    });
+    
+    const [notesCollection, setNotesCollection] = useState(() => {
+        const RawData = localStorage.getItem(storeNotes);
+        if(RawData === null){
+            // console.log("in if");
+            // console.log(RawData);
+            return [];
+        } else {
+            // console.log("in else");
+            // console.log(RawData);
             return JSON.parse(RawData) ;
         }
     });
 
     // set data in localStorage on mount
-    localStorage.setItem(storageKey, JSON.stringify(notesCollection));
+    localStorage.setItem(storeNotes, JSON.stringify(notesCollection));
+    localStorage.setItem(storeLabels, JSON.stringify(labelCollection));
 
     const [taskCollection, settaskCollection] = useState([
         {
@@ -39,7 +54,7 @@ function ToDoContextProvider ({children}) {
 
 
     return (
-    <ToDoContext.Provider value={{showPopup, setShowPopup, notesCollection, setNotesCollection, showNoteCard, setShowNoteCard, DateNow, setDateNow, boldtext, setBoldtext, italicText, setItalicText, underlineText, setUnderlineText, editcurNote, setEditcurNote}}>
+    <ToDoContext.Provider value={{showCreatingNote, setShowCreatingNote, notesCollection, setNotesCollection, showNoteCard, setShowNoteCard, DateNow, setDateNow, boldtext, setBoldtext, italicText, setItalicText, underlineText, setUnderlineText, editcurNote, setEditcurNote, labelCollection, setLabelCollection}}>
         {children}
     </ToDoContext.Provider >
     )

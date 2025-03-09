@@ -26,16 +26,16 @@ function AddNotes({MyNote}) {
     checkedRef.current = labelCollection.map((_, i) => checkedRef.current[i] || React.createRef());
   }, [labelCollection]);
 
-  // function for checking only one label at a time and assign label value to it's corresponding Note
+  // function for checking that only one label at a time should be checked and assign label value to it's corresponding Note
   const checkLabel = (curLabel, index) => {
     checkedRef.current.map((ref, i) => {
       if (ref.current && i === index) {
         if(ref.current.checked === false){
-          ref.current.checked === false
+          ref.current.checked = false
           inputLabelRef.current.disabled = false;
           setNoteLabel('');
         } else {
-          ref.current.checked === true
+          ref.current.checked = true
           setNoteLabel(ref.current.value);
           // when a checkbox is checked then input label will be empty.
           inputLabelRef.current.value = "";
@@ -62,6 +62,7 @@ function AddNotes({MyNote}) {
       setBoldtext(MyNote.bold);
       setItalicText(MyNote.italic);
       setUnderlineText(MyNote.underline);
+      setNoteLabel(( MyNote.MyLabel !== "Default" ? MyNote.MyLabel: '' ));
       setIsEditing(true); // Set editing flag
     }
   }, [MyNote]); // Runs when `MyNote` changes
@@ -190,6 +191,7 @@ function AddNotes({MyNote}) {
                     type='text'
                     placeholder='Enter Label'
                     ref={inputLabelRef}
+                    value={noteLabel}
                     onChange = { (e) => setNoteLabel(e.target.value) }
                   />
                   {labelCollection.length > 0 && (
@@ -200,9 +202,15 @@ function AddNotes({MyNote}) {
                             type="checkbox"
                             value={currentLabel}
                             ref = { checkedRef.current[index] }
+                            checked={(() => {
+                              if (isEditing) {
+                                return currentLabel === noteLabel;
+                              }
+                            })()}
                             onChange={ () => checkLabel(currentLabel, index) } 
                           />
                           <span>{currentLabel}</span>
+                          <input type='color'/>
                         </div>
                         ))
                       }

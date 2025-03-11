@@ -43,7 +43,7 @@ function Notecard() {
             return <div 
                     className={`bg-[#F2EFF2] border-2 sm:min-w-[270px] w-[160px] 
                       sm:h-[240px] h-[30vh] flex flex-col justify-between 
-                      p-1 rounded-2xl hover:rounded NoteCard-shadow hover:scale-105 z-0`}
+                      p-1 rounded-2xl hover:rounded NoteCard-shadow hover:scale-102 z-0`}
                     style={{ borderColor: currentNote.MyColor }}
                     onMouseEnter={(e) => e.currentTarget.style.borderColor = 'red'}
                     onMouseLeave={(e) => e.currentTarget.style.borderColor = currentNote.MyColor}

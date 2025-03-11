@@ -15,10 +15,11 @@ function AddNotes({MyNote}) {
   const [showNoteoptions, setShowNoteoptions] = useState(false);
   // variables related to Labels
   const [noteLabel, setNoteLabel] = useState('');
+  const [noteColor, setNoteColor] = useState('#172554');
   const [showLabelOptions, setShowLabelOptions] = useState(false);
   const checkedRef = useRef([]);
   const inputLabelRef = useRef(null);
-
+  
   const { setShowCreatingNote, notesCollection, setNotesCollection, setShowNoteCard, DateNow, setDateNow, boldtext, setBoldtext, italicText, setItalicText, underlineText, setUnderlineText, setEditcurNote, labelCollection, setLabelCollection} = useContext(ToDoContext);
 
   // creating references for each new created label.
@@ -34,11 +35,14 @@ function AddNotes({MyNote}) {
           ref.current.checked = false
           inputLabelRef.current.disabled = false;
           setNoteLabel('');
+          setNoteColor('#172554');
         } else {
           ref.current.checked = true
-          setNoteLabel(ref.current.value);
+          // setNoteLabel(ref.current.value);             ref.current.value ==== curLabel.LabelName as in line 239 value = curLabel.LabelName.
+          setNoteLabel(curLabel.LabelName);
+          setNoteColor(curLabel.LabelColor);
           // when a checkbox is checked then input label will be empty.
-          inputLabelRef.current.value = "";
+          // inputLabelRef.current.value = "";
           inputLabelRef.current.disabled = true;
         }
       } else {
@@ -49,11 +53,37 @@ function AddNotes({MyNote}) {
 
   // updates label collection. remains only those labels who are related to atleast one Note.
   useEffect(() => {
-    const newLabels = labelCollection.filter(label => 
-      notesCollection.some(note => note.MyLabel === label)
+    const newLabels = labelCollection.filter(curLabel => 
+      notesCollection.some(curNote => curNote.MyLabel === curLabel.LabelName)
     );
-    setLabelCollection(newLabels);
+      if (JSON.stringify(newLabels) !== JSON.stringify(labelCollection)) {
+      setLabelCollection(newLabels);
+    }
+  
+    const newNoteCollection = notesCollection.map((curNote) => {
+      const matchedLabel = labelCollection.find(curLabel => curNote.MyLabel === curLabel.LabelName);
+      return matchedLabel ? { ...curNote, MyColor: matchedLabel.LabelColor } : curNote;
+    });
+    if (JSON.stringify(newNoteCollection) !== JSON.stringify(notesCollection)) {
+      setNotesCollection(newNoteCollection);
+    }
   }, [notesCollection]);
+
+  // function to update existing labels' labelColor property dynamicaly in real time
+  const handleColorChange = (index, newColor) => {
+    setLabelCollection(prevLabels =>
+      prevLabels.map((curlabel, i) =>
+        i === index ? { ...curlabel, LabelColor: newColor } : curlabel
+      )
+    );
+  };
+
+  // this will set noteColor value again blue-950 if it is enter Mylabel value is empty.
+  useEffect(() => {
+    if (noteLabel.trim() === '') {
+      setNoteColor('#172554');
+    }
+  }, [noteLabel]);
 
   // runs when user try to update a existing Note.
   useEffect(() => {
@@ -63,18 +93,10 @@ function AddNotes({MyNote}) {
       setItalicText(MyNote.italic);
       setUnderlineText(MyNote.underline);
       setNoteLabel(( MyNote.MyLabel !== "Default" ? MyNote.MyLabel: '' ));
+      setNoteColor( (MyNote.MyColor !== '#172554' ? MyNote.MyColor: '#172554') )
       setIsEditing(true); // Set editing flag
     }
   }, [MyNote]); // Runs when `MyNote` changes
-
-  // set Date Variable for current Note.
-  useEffect(()=> {
-    setDateNow(new Date().toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    }))
-  },[inputTask])
 
   // function to click back button
   const backButtonClicked = () => {
@@ -84,7 +106,16 @@ function AddNotes({MyNote}) {
     setEditcurNote('');
     setShowCreatingNote(false);
   }
-
+  
+  // set Date Variable for current Note.
+  useEffect(()=> {
+    setDateNow(new Date().toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    }))
+  },[inputTask]);
+  
   // function to click SAVE Button
   const saveNoteButton = (e) => {
     e.preventDefault();
@@ -99,19 +130,23 @@ function AddNotes({MyNote}) {
       // run When user edit a existing Node
       const newNoteCollection = notesCollection.map((item) => {
         if (item.id === MyNote.id) {
-          return { ...item, Notedate: DateNow, Note: inputTask, bold: boldtext, italic: italicText, underline: underlineText, MyLabel: (!noteLabel)? "Default" : noteLabel };
+          return { ...item, Notedate: DateNow, Note: inputTask, bold: boldtext, italic: italicText, underline: underlineText, MyLabel: (!noteLabel)? "Default" : noteLabel, MyColor: (noteColor === '#172554') ? "#172554" : noteColor };
         }
         return item;
       });
       setNotesCollection(newNoteCollection);
       setIsEditing(false); // Reset flag after update
-    } else {
-        setNotesCollection((prev) => [...prev, { id: uuidv4(), Notedate: DateNow, Note: inputTask, bold: boldtext, italic: italicText, underline: underlineText, MyLabel: (!noteLabel)? "Default" : noteLabel }]); // Runs when a new Node Added in Note collection
+    } 
+    else {
+      setNotesCollection((prev) => [...prev, { id: uuidv4(), Notedate: DateNow, Note: inputTask, bold: boldtext, italic: italicText, underline: underlineText, MyLabel: (!noteLabel)? "Default" : noteLabel, MyColor: (noteColor === '#172554') ? "#172554" : noteColor } ]); // Runs when a new Node Added in Note collection
     }
-    // add newly created label to the label collection
-    setLabelCollection(prev => (
-      noteLabel && !prev.includes(noteLabel) ? [...prev, noteLabel] : prev
+
+    setLabelCollection((prev) => (
+      noteLabel && !prev.some((item) => item.LabelName === noteLabel)
+        ? [...prev, { LabelName: noteLabel, LabelColor: noteColor }]
+        : prev
     ));
+
     setShowNoteCard(true);
     setBoldtext(false);
     setItalicText(false);
@@ -195,15 +230,25 @@ function AddNotes({MyNote}) {
             {
               showLabelOptions && (
                 <div className='border-1 absolute right-1 top-7 bg-white border-[#949392] rounded-xl shadow-2xl text-blue-950'>
-                  <div className='border-0 my-3 px-3'>
+                  <div className='border-0 my-3 px-3 relative'>
                     <p>My Label</p>
                     <input
                       className = 'outline-none border-1 border-[#C9C8C7] rounded pl-1 mt-1 '
                       type = 'text'
                       placeholder='Default'
                       ref = {inputLabelRef}
-                      value = {noteLabel}
+                      value = { noteLabel }
                       onChange = { (e) => setNoteLabel(e.target.value) }
+                    />
+                    <input
+                      className='absolute top-0.5'
+                      type='color'
+                      id='style1'
+                      value={ noteColor }
+                      disabled={noteLabel.trim() === ''}
+                      onChange={(e) => {
+                        setNoteColor(e.target.value);
+                      }}
                     />
                   </div>
                   {labelCollection.length > 0 && (
@@ -212,20 +257,22 @@ function AddNotes({MyNote}) {
                         <div key={index} className="flex items-center gap-2 border-0 h-[35px] hover:bg-[#dbd7d5] transition duration-500 px-3 relative">
                           <input
                             type="checkbox"
-                            value={currentLabel}
+                            value={currentLabel.LabelName}
                             ref = { checkedRef.current[index] }
                             checked={(() => {
                               if (isEditing) {
-                                return currentLabel === noteLabel;
+                                return currentLabel.LabelName === noteLabel;
                               }
                             })()}
                             onChange={ () => checkLabel(currentLabel, index) } 
                           />
-                          <span>{currentLabel}</span>
+                          <span>{currentLabel.LabelName}</span>     {/* or <span>{labelCollection[index].LabelName}</span> */}
                           <input
                             type='color'
                             id='style1'
-                            value={'#172554'}
+                            // disabled
+                            value={ labelCollection[index].LabelColor }
+                            onChange={(e) => handleColorChange(index, e.target.value)}
                           />
                         </div>
                         ))

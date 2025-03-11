@@ -41,9 +41,10 @@ function Notecard() {
         {
           notesCollection.map((currentNote, index) => {
             return <div 
-                    className = ' bg-[#F2EFF2] border-1 border-blue-950 hover:border-red-500 sm:min-w-[270px] w-[160px] sm:h-[240px] h-[30vh] flex flex-col justify-between p-1 rounded-2xl hover:rounded NoteCard-shadow hover:scale-105 z-0'
-                    // className='note-card NoteCard-shadow'
-                    key = { index }
+                    className={`bg-[#F2EFF2] border-2 hover:border-red-500 sm:min-w-[270px] w-[160px] 
+                      sm:h-[240px] h-[30vh] flex flex-col justify-between p-1 rounded-2xl 
+                      hover:rounded NoteCard-shadow hover:scale-102 z-0`}
+                    style={{ borderColor: currentNote.MyColor }}key = { index }
                     id = { currentNote.id }
                     >
                       <div className = 'flex justify-between text-[12px] text-[#245F73] opacity-70'>

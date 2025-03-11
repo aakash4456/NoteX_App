@@ -14,6 +14,8 @@ function ToDoContextProvider ({children}) {
     const [DateNow, setDateNow] = useState('');
     const [editcurNote, setEditcurNote] = useState('');
 
+    const [showLabelOptions, setShowLabelOptions] = useState(false);
+
     const [labelCollection, setLabelCollection] = useState(() => {
         const RawData = localStorage.getItem(storeLabels);
         if(RawData === null){
@@ -54,7 +56,7 @@ function ToDoContextProvider ({children}) {
 
 
     return (
-    <ToDoContext.Provider value={{showCreatingNote, setShowCreatingNote, notesCollection, setNotesCollection, showNoteCard, setShowNoteCard, DateNow, setDateNow, boldtext, setBoldtext, italicText, setItalicText, underlineText, setUnderlineText, editcurNote, setEditcurNote, labelCollection, setLabelCollection}}>
+    <ToDoContext.Provider value={{showCreatingNote, setShowCreatingNote, notesCollection, setNotesCollection, showNoteCard, setShowNoteCard, DateNow, setDateNow, boldtext, setBoldtext, italicText, setItalicText, underlineText, setUnderlineText, editcurNote, setEditcurNote, labelCollection, setLabelCollection, showLabelOptions, setShowLabelOptions}}>
         {children}
     </ToDoContext.Provider >
     )

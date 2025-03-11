@@ -3,7 +3,7 @@ import '../App.css'
 import { v4 as uuidv4 } from 'uuid';
 import { IoIosArrowRoundBack } from "react-icons/io";
 import { GrBold } from "react-icons/gr";
-import { MdFormatItalic, MdMoreVert, MdContentCopy, MdCheckBox } from "react-icons/md";
+import { MdFormatItalic, MdMoreVert } from "react-icons/md";
 import { RxCross2 } from "react-icons/rx";
 import { BsTypeUnderline } from "react-icons/bs";
 import ToDoContext from '../Contexts/ToDoContext';
@@ -16,11 +16,10 @@ function AddNotes({MyNote}) {
   // variables related to Labels
   const [noteLabel, setNoteLabel] = useState('');
   const [noteColor, setNoteColor] = useState('#172554');
-  const [showLabelOptions, setShowLabelOptions] = useState(false);
   const checkedRef = useRef([]);
   const inputLabelRef = useRef(null);
   
-  const { setShowCreatingNote, notesCollection, setNotesCollection, setShowNoteCard, DateNow, setDateNow, boldtext, setBoldtext, italicText, setItalicText, underlineText, setUnderlineText, setEditcurNote, labelCollection, setLabelCollection} = useContext(ToDoContext);
+  const { setShowCreatingNote, notesCollection, setNotesCollection, setShowNoteCard, DateNow, setDateNow, boldtext, setBoldtext, italicText, setItalicText, underlineText, setUnderlineText, setEditcurNote, labelCollection, setLabelCollection, showLabelOptions, setShowLabelOptions} = useContext(ToDoContext);
 
   // creating references for each new created label.
   useEffect(() => {

@@ -15,7 +15,7 @@ function App() {
         </p>
       </div>
       <ToDoContextProvider>
-        <ToDoDashBoard/>
+        <ToDoDashBoard />
       </ToDoContextProvider>
     </>
   );

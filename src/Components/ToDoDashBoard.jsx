@@ -6,14 +6,30 @@ import Notecard from './Notecard';
 
 
 function ToDoDashBoard() {
-  const { showCreatingNote, setShowCreatingNote, showNoteCard, editcurNote} = useContext(ToDoContext);
+  const { 
+    showCreatingNote, setShowCreatingNote,
+    showNoteCard,
+    editcurNote,
+    setShowLabelOptions,
+    setShowEachNoteoptions,
+    setShowEachLabelOptions
+    } = useContext(ToDoContext);
 
   return (
     <>
       <div className="w-full flex flex-col justify-center items-center">
         <button
           className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
-          onClick={() => setShowCreatingNote(true)}
+          onClick={() => { 
+            setShowEachNoteoptions((prevOptions) =>
+              prevOptions.map((item, i) => ( { ...item, optionstate: false } ) )
+            );
+            setShowEachLabelOptions((prevOptions) =>
+              prevOptions.map((item, i) => ( { ...item, Labeloptionstate: false } ) ) 
+            );
+            setShowLabelOptions(false);
+            setShowCreatingNote(true);
+          }}
         >
         Open Add Notes
         </button>

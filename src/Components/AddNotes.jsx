@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect, useRef } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import '../App.css'
 import { v4 as uuidv4 } from 'uuid';
 import { IoIosArrowRoundBack } from "react-icons/io";
@@ -7,25 +7,30 @@ import { MdFormatItalic, MdMoreVert } from "react-icons/md";
 import { RxCross2 } from "react-icons/rx";
 import { BsTypeUnderline } from "react-icons/bs";
 import ToDoContext from '../Contexts/ToDoContext';
+import NoteFeatures from './NoteFeatures';
 
 function AddNotes({MyNote}) {
-  const [inputTask, setInputTask] = useState('')            // set Note value for each created/updated note
+  const [inputTask, setInputTask] = useState('');   // set Note value for each created/updated note
   const [isEditing, setIsEditing] = useState(false);
-  // show options like Add Label, Copy Note etc.
-  const [showNoteoptions, setShowNoteoptions] = useState(false);
-  // variables related to Labels
-  const [noteLabel, setNoteLabel] = useState('');
-  const [noteColor, setNoteColor] = useState('#172554');
-  const checkedRef = useRef([]);
-  const inputLabelRef = useRef(null);
+  const [showNoteoptions, setShowNoteoptions] = useState(false);    // show options like Add Label, Copy Note etc.
   
-  const { setShowCreatingNote, notesCollection, setNotesCollection, setShowNoteCard, DateNow, setDateNow, boldtext, setBoldtext, italicText, setItalicText, underlineText, setUnderlineText, setEditcurNote, labelCollection, setLabelCollection, showLabelOptions, setShowLabelOptions} = useContext(ToDoContext);
-
-  // creating references for each new created label.
-  useEffect(() => {
-    checkedRef.current = labelCollection.map((_, i) => checkedRef.current[i] || React.createRef());
-  }, [labelCollection]);
-
+  const { 
+    setShowCreatingNote,
+    notesCollection, setNotesCollection,
+    setShowNoteCard,
+    DateNow, setDateNow,
+    boldtext, setBoldtext,
+    italicText, setItalicText,
+    underlineText, setUnderlineText,
+    setEditcurNote,
+    noteLabel, setNoteLabel,
+    noteColor, setNoteColor,
+    labelCollection, setLabelCollection,
+    showLabelOptions, setShowLabelOptions, // at the time of creating/ updating a note.
+    checkedRef,
+    inputLabelRef
+    } = useContext(ToDoContext);
+  
   // function for checking that only one label at a time should be checked and assign label value to it's corresponding Note
   const checkLabel = (curLabel, index) => {
     checkedRef.current.map((ref, i) => {
@@ -49,25 +54,7 @@ function AddNotes({MyNote}) {
       }
     });
   }
-
-  // updates label collection. remains only those labels who are related to atleast one Note.
-  useEffect(() => {
-    const newLabels = labelCollection.filter(curLabel => 
-      notesCollection.some(curNote => curNote.MyLabel === curLabel.LabelName)
-    );
-      if (JSON.stringify(newLabels) !== JSON.stringify(labelCollection)) {
-      setLabelCollection(newLabels);
-    }
   
-    const newNoteCollection = notesCollection.map((curNote) => {
-      const matchedLabel = labelCollection.find(curLabel => curNote.MyLabel === curLabel.LabelName);
-      return matchedLabel ? { ...curNote, MyColor: matchedLabel.LabelColor } : curNote;
-    });
-    if (JSON.stringify(newNoteCollection) !== JSON.stringify(notesCollection)) {
-      setNotesCollection(newNoteCollection);
-    }
-  }, [notesCollection]);
-
   // function to update existing labels' labelColor property dynamicaly in real time
   const handleColorChange = (index, newColor) => {
     setLabelCollection(prevLabels =>
@@ -76,14 +63,14 @@ function AddNotes({MyNote}) {
       )
     );
   };
-
+  
   // this will set noteColor value again blue-950 if it is enter Mylabel value is empty.
   useEffect(() => {
     if (noteLabel.trim() === '') {
       setNoteColor('#172554');
     }
   }, [noteLabel]);
-
+  
   // runs when user try to update a existing Note.
   useEffect(() => {
     if (MyNote) {
@@ -93,15 +80,17 @@ function AddNotes({MyNote}) {
       setUnderlineText(MyNote.underline);
       setNoteLabel(( MyNote.MyLabel !== "Default" ? MyNote.MyLabel: '' ));
       setNoteColor( (MyNote.MyColor !== '#172554' ? MyNote.MyColor: '#172554') )
-      setIsEditing(true); // Set editing flag
+      setIsEditing(true);
     }
   }, [MyNote]); // Runs when `MyNote` changes
-
+  
   // function to click back button
   const backButtonClicked = () => {
     setBoldtext(false);
     setItalicText(false);
     setUnderlineText(false);
+    setNoteLabel('');
+    setShowLabelOptions(false);
     setEditcurNote('');
     setShowCreatingNote(false);
   }
@@ -121,7 +110,10 @@ function AddNotes({MyNote}) {
     if (!inputTask.trim()) {
       setBoldtext(false);
       setItalicText(false);
-      setUnderlineText(false)
+      setUnderlineText(false);
+      setNoteLabel('');
+      setNoteColor('#172554');
+      setShowLabelOptions(false);
       setShowCreatingNote(false);
       return;
     }
@@ -129,27 +121,48 @@ function AddNotes({MyNote}) {
       // run When user edit a existing Node
       const newNoteCollection = notesCollection.map((item) => {
         if (item.id === MyNote.id) {
-          return { ...item, Notedate: DateNow, Note: inputTask, bold: boldtext, italic: italicText, underline: underlineText, MyLabel: (!noteLabel)? "Default" : noteLabel, MyColor: (noteColor === '#172554') ? "#172554" : noteColor };
+          return { ...item, 
+                      Notedate: DateNow,
+                      Note: inputTask,
+                      bold: boldtext,
+                      italic: italicText,
+                      underline: underlineText,
+                      MyLabel: (!noteLabel)? "Default" : noteLabel,
+                      MyColor: (noteColor === '#172554') ? "#172554" : noteColor
+                  };
         }
         return item;
       });
       setNotesCollection(newNoteCollection);
-      setIsEditing(false); // Reset flag after update
+      setIsEditing(false); // Reset flag after update.
     } 
     else {
-      setNotesCollection((prev) => [...prev, { id: uuidv4(), Notedate: DateNow, Note: inputTask, bold: boldtext, italic: italicText, underline: underlineText, MyLabel: (!noteLabel)? "Default" : noteLabel, MyColor: (noteColor === '#172554') ? "#172554" : noteColor } ]); // Runs when a new Node Added in Note collection
+      setNotesCollection((prev) => [...prev,
+                                      { id: uuidv4(),
+                                        Notedate: DateNow,
+                                        Note: inputTask,
+                                        bold: boldtext,
+                                        italic: italicText,
+                                        underline: underlineText,
+                                        MyLabel: (!noteLabel)? "Default" : noteLabel,
+                                        MyColor: (noteColor === '#172554') ? "#172554" : noteColor
+                                      }
+                                    ] ); // Runs when a new Node Added in Note collection
     }
-
+    
     setLabelCollection((prev) => (
       noteLabel && !prev.some((item) => item.LabelName === noteLabel)
         ? [...prev, { LabelName: noteLabel, LabelColor: noteColor }]
         : prev
     ));
-
-    setShowNoteCard(true);
+    
     setBoldtext(false);
     setItalicText(false);
     setUnderlineText(false)
+    setNoteLabel('');
+    setNoteColor('#172554')
+    setShowLabelOptions(false);
+    setShowNoteCard(true);
     // Delay closing to allow state update to close AddNote
     setTimeout(() => {
       setEditcurNote('');
@@ -160,7 +173,11 @@ function AddNotes({MyNote}) {
   return (
     <>
       <div
-        className={`bg-white absolute top-[20vh] sm:left-[25vw] left-[5vw] sm:w-[50vw] sm:h-[60vh] w-[90vw] h-[70vh] rounded-xl px-2 pt-4 custom-shadow z-50
+        className={`bg-white
+        absolute top-[20vh] sm:left-[25vw] left-[5vw]
+        sm:w-[50vw] sm:h-[60vh]
+        w-[90vw] h-[70vh]
+        rounded-xl px-2 pt-4 custom-shadow z-50
         ${(boldtext)? 'font-bold' : 'font-normal'}
         ${(italicText)? 'italic' : 'non-italic'}
         ${(underlineText)? 'underline' : 'non-underline'}`}
@@ -189,12 +206,12 @@ function AddNotes({MyNote}) {
               />
               <div className='absolute right-1 flex justify-center items-center'>
                 <MdMoreVert
-                  className={`absolute bg-gray-200 hover:bg-gray-400 rounded transition-all duration-300 ease-in-out transformc
+                  className={`absolute bg-gray-200 hover:bg-gray-400 rounded transition-all duration-300 ease-in-out transform
                     ${ showNoteoptions ? "opacity-0 scale-0" : "opacity-100 scale-100" } `}
-                    onClick = { () => {
-                      setShowNoteoptions(!showNoteoptions) 
-                      if(showLabelOptions === true) setShowLabelOptions(false);
-                    } }
+                  onClick = { () => {
+                    setShowNoteoptions(!showNoteoptions) 
+                    if(showLabelOptions === true) setShowLabelOptions(false);
+                  }}
                 />
                 <RxCross2
                   className={` bg-gray-200 hover:bg-gray-400 rounded transition-all duration-300 ease-in-out transform
@@ -206,23 +223,7 @@ function AddNotes({MyNote}) {
             {/* Note options when Triple Dot clicked */}
             {
               showNoteoptions && (
-                <div className='border-1 absolute right-1 top-7 bg-white border-[#949392] rounded-xl w-[200px] shadow-2xl text-blue-950 px-1 py-2'>
-                  <ul className='flex flex-col gap-2'>
-                    <li
-                      className='cursor-pointer pl-3 hover:bg-[#dbd7d5] transition duration-500 rounded-xl h-[30px] '
-                      onClick = { () => setShowLabelOptions(true) }
-                    > Add Label </li>
-                    <li
-                      className='cursor-pointer pl-3 hover:bg-[#dbd7d5] transition duration-500 rounded-xl h-[30px]'
-                    > Copy Note </li>
-                    <li
-                      className='cursor-pointer pl-3 hover:bg-[#dbd7d5] transition duration-500 rounded-xl h-[30px]'
-                    > Make a Copy </li>
-                    <li
-                      className='cursor-pointer pl-3 hover:bg-[#dbd7d5] transition duration-500 rounded-xl h-[30px]'
-                    > delete Note </li>
-                  </ul>
-                </div>
+                <NoteFeatures sm_right='1' sm_top='7' right='1' top='7' width='200'/>
               )
             }
             {/* Label options when Add Label Clicked */}
@@ -236,14 +237,14 @@ function AddNotes({MyNote}) {
                       type = 'text'
                       placeholder='Default'
                       ref = {inputLabelRef}
-                      value = { noteLabel }
+                      value = {noteLabel}
                       onChange = { (e) => setNoteLabel(e.target.value) }
                     />
                     <input
                       className='absolute top-0.5'
                       type='color'
                       id='style1'
-                      value={ noteColor }
+                      value={noteColor}
                       disabled={noteLabel.trim() === ''}
                       onChange={(e) => {
                         setNoteColor(e.target.value);
@@ -257,19 +258,18 @@ function AddNotes({MyNote}) {
                           <input
                             type="checkbox"
                             value={currentLabel.LabelName}
-                            ref = { checkedRef.current[index] }
+                            ref={checkedRef.current[index]}
                             checked={(() => {
                               if (isEditing) {
                                 return currentLabel.LabelName === noteLabel;
                               }
                             })()}
-                            onChange={ () => checkLabel(currentLabel, index) } 
+                            onChange={() => checkLabel(currentLabel, index)} 
                           />
                           <span>{currentLabel.LabelName}</span>     {/* or <span>{labelCollection[index].LabelName}</span> */}
                           <input
                             type='color'
                             id='style1'
-                            // disabled
                             value={ labelCollection[index].LabelColor }
                             onChange={(e) => handleColorChange(index, e.target.value)}
                           />
@@ -281,7 +281,6 @@ function AddNotes({MyNote}) {
                 </div>
               )
             }
-
             <textarea
               className='bg-[white] border-2 border-[#C9C8C7] outline-[#949392] sm:w-[98%] w-[96%] h-[80%] rounded-xl sm:ml-[1%] ml-[2%] p-2 resize-none overflow-y-auto font-mono'
               style = {{ whiteSpace: 'pre-wrap' }}

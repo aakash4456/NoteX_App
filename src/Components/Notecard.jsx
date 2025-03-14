@@ -1,7 +1,7 @@
-import React, { useContext, useEffect, useRef } from 'react'
+import React, { useContext, useEffect } from 'react'
 import '../App.css'
 import ToDoContext from '../Contexts/ToDoContext';
-import { MdDeleteOutline, MdContentCopy, MdMoreVert } from "react-icons/md";
+import { MdMoreVert } from "react-icons/md";
 import { FiEdit } from "react-icons/fi";
 import { RxCross2 } from "react-icons/rx";
 import NoteFeatures from './NoteFeatures';
@@ -18,10 +18,9 @@ function Notecard() {
     showEachNoteOptions, setShowEachNoteoptions,
     showEachLabelOptions, setShowEachLabelOptions,
     checkedRef,
-    inputLabelRef
+    inputLabelRef,
+    copyRef
   } = useContext(ToDoContext);
-  
-  const copyRef = useRef([]);
   
   // function for checking that only one label at a time should be checked and assign label value to it's corresponding Note
   const checkLabel = (curLabel, index) => {
@@ -81,25 +80,10 @@ function Notecard() {
     copyRef.current = notesCollection.map((_, i) => copyRef.current[i] || React.createRef())
   }, [notesCollection]);
   
-  // function for copy a Note value
-  const copyNote = (curtNote, index) => {
-    const selectText = copyRef.current[index]?.current;
-    if(selectText){
-      selectText.select();
-      window.navigator.clipboard.writeText(curtNote.Note);
-    }
-  }
-  
   // function for editing a Note
   const EditNote = (curtNote) => {
     setEditcurNote(curtNote);
     setShowCreatingNote(true);
-  };
-  
-  // function for deleting a Note
-  const DeleteNote = (curtNote) => {
-    const newNoteCollection = notesCollection.filter((item) => (item !== curtNote ));
-    setNotesCollection(newNoteCollection);
   };
   
   return (
@@ -142,18 +126,6 @@ function Notecard() {
                             <FiEdit />
                           </button>
                           <button
-                            className = 'hover:bg-[#C9C8C7] transition duration-300 rounded'
-                            onClick = { () => copyNote(currentNote, index) }
-                          >
-                            <MdContentCopy />
-                          </button>
-                          <button
-                            className = 'hover:bg-[#C9C8C7] transition duration-300 rounded'
-                            onClick = { () => DeleteNote(currentNote) }
-                          >
-                            <MdDeleteOutline/>
-                          </button>
-                          <button
                             className={`absolute bg-gray-200 hover:bg-gray-400 rounded transition-all duration-300 ease-in-out transform
                               ${ showEachNoteOptions[index]?.optionstate ? "opacity-0 scale-0" : "opacity-100 scale-100" } `}
                             onClick = { () => {
@@ -188,7 +160,7 @@ function Notecard() {
                       {
                         showEachNoteOptions[index]?.optionstate && (
                           <div className='absolute sm:right-8 sm:top-9.5 right-4.5 bottom-5.5 sm:w-[200px] w-[120px]'>
-                            <NoteFeatures MyIndex={index} showAllFeatures={true} />
+                            <NoteFeatures showAllFeatures={true} curtIndex={index} curtNote={currentNote}/>
                           </div>
                         )
                       }

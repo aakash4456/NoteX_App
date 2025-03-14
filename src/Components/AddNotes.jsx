@@ -224,7 +224,7 @@ function AddNotes({MyNote}) {
             {
               showNoteoptions && (
                 <div className='absolute right-1 top-7 sm:w-[200px] w-[200px]'>
-                  <NoteFeatures MyIndex={null} showAllFeatures={false} />
+                  <NoteFeatures />
                 </div>
               )
             }

@@ -26,6 +26,8 @@ function ToDoContextProvider ({children}) {
     const [showEachNoteOptions, setShowEachNoteoptions] = useState([]);
     const [showEachLabelOptions, setShowEachLabelOptions] = useState([]);
 
+    const copyRef = useRef([]); // reference to copy of a specific note value.
+
     // Array to store All Notes.
     const [notesCollection, setNotesCollection] = useState(() => {
         const RawData = localStorage.getItem(storeNotes);
@@ -88,6 +90,21 @@ function ToDoContextProvider ({children}) {
             setNotesCollection(newNoteCollection);
         }
     }, [notesCollection]);
+
+    // function for copy a Note value
+    const copyNote = (curtNote, index) => {
+        const selectText = copyRef.current[index]?.current;
+        if(selectText){
+            selectText.select();
+            window.navigator.clipboard.writeText(curtNote.Note);
+        }
+    }
+
+    // function for deleting a Note
+    const DeleteNote = (curtNote) => {
+        const newNoteCollection = notesCollection.filter((item) => (item !== curtNote ));
+        setNotesCollection(newNoteCollection);
+    };
     
     return (
     <ToDoContext.Provider
@@ -106,7 +123,10 @@ function ToDoContextProvider ({children}) {
                 noteLabel, setNoteLabel,
                 noteColor, setNoteColor,
                 checkedRef,
-                inputLabelRef
+                inputLabelRef,
+                copyRef,
+                copyNote,
+                DeleteNote
     }}>
         {children}
     </ToDoContext.Provider >

@@ -1,12 +1,14 @@
 import React, { useContext } from 'react'
 import ToDoContext from '../Contexts/ToDoContext';
 
-function NoteFeatures({MyIndex, showAllFeatures}) {
-
+function NoteFeatures({showAllFeatures=false, curtIndex=null, curtNote=null}) {
     const {
         setShowLabelOptions,
         setShowEachNoteoptions,
-        setShowEachLabelOptions
+        setShowEachLabelOptions,
+        copyNote,
+        DeleteNote,
+        setNotesCollection
         } = useContext(ToDoContext);
 
     return (
@@ -25,7 +27,7 @@ function NoteFeatures({MyIndex, showAllFeatures}) {
                             // open Label Options
                             setShowEachLabelOptions((prevOptions) =>
                                 prevOptions.map((item, i) =>
-                                    i === MyIndex ? { ...item, Labeloptionstate: true } : { ...item, Labeloptionstate: false }
+                                    i === curtIndex ? { ...item, Labeloptionstate: true } : { ...item, Labeloptionstate: false }
                                 )
                             );
                     }}
@@ -35,12 +37,26 @@ function NoteFeatures({MyIndex, showAllFeatures}) {
                             <>
                                 <li
                                     className='cursor-pointer pl-3 hover:bg-[#dbd7d5] transition duration-500 rounded-xl h-[30px]'
+                                    onClick = { () => {
+                                        copyNote( curtNote, curtIndex );
+                                        setShowEachNoteoptions((prevOptions) =>
+                                            prevOptions.map((item, i) => ( { ...item, optionstate: false } ) )
+                                        );
+                                    } }
                                 > Copy Note </li>
                                 <li
                                     className='cursor-pointer pl-3 hover:bg-[#dbd7d5] transition duration-500 rounded-xl h-[30px]'
+                                    onClick={() => {
+                                        console.log("i am make a copy");
+                                        setNotesCollection((prev) => [...prev, curtNote]);
+                                        setShowEachNoteoptions((prevOptions) =>
+                                            prevOptions.map((item, i) => ( { ...item, optionstate: false } ) )
+                                        );
+                                    }}
                                 > Make a Copy </li>
                                 <li
                                     className='cursor-pointer pl-3 hover:bg-[#dbd7d5] transition duration-500 rounded-xl h-[30px]'
+                                    onClick = { () => DeleteNote(curtNote) }
                                 > Delete Note </li>
                             </>
                         )

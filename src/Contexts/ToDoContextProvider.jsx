@@ -8,7 +8,7 @@ function ToDoContextProvider ({children}) {
     const storeLabels = "LabelCollection"
 
     const [showCreatingNote, setShowCreatingNote] = useState(false);
-    const [showNoteCard, setShowNoteCard] = useState(false);
+    const [showNoteCard, setShowNoteCard] = useState(true);
     const [boldtext, setBoldtext] = useState(false);
     const [italicText, setItalicText] = useState(false);
     const [underlineText, setUnderlineText] = useState(false);

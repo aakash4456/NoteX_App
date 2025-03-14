@@ -165,10 +165,6 @@ function Notecard() {
                                   i === index ? { ...item, optionstate: true } : { ...item, optionstate: false }
                                 )
                               );
-                              // close other note's label options if they are opened.
-                              setShowEachLabelOptions((prevOptions) =>
-                                prevOptions.map((item, i) => ( { ...item, Labeloptionstate: false } ) ) 
-                              );
                             }}
                           >
                             <MdMoreVert />
@@ -177,6 +173,7 @@ function Notecard() {
                             className={` bg-gray-200 hover:bg-gray-400 rounded transition-all duration-300 ease-in-out transform
                               ${ showEachNoteOptions[index]?.optionstate ? "opacity-100 scale-100" : "opacity-0 scale-0" } `}
                             onClick = { () => {
+                              // close Note options for clicked note.
                               setShowEachNoteoptions((prevOptions) =>
                                 prevOptions.map((item, i) =>
                                   i === index ? { ...item, optionstate: false } : item
@@ -190,13 +187,16 @@ function Notecard() {
                       </div>
                       {
                         showEachNoteOptions[index]?.optionstate && (
-                          <NoteFeatures sm_right='12' sm_top='16' right='4.5' top='4' width='120'  MyIndex={index}/>
+                          <div className='absolute sm:right-8 sm:top-9.5 right-4.5 bottom-5.5 sm:w-[200px] w-[120px]'>
+                            <NoteFeatures MyIndex={index} showAllFeatures={true} />
+                          </div>
                         )
                       }
                       { showEachLabelOptions[index]?.Labeloptionstate && 
                         <div
                           className="overlay"
                           onClick={() => {
+                            // close label options for cliked note if it is opened.
                             setShowEachLabelOptions((prevOptions) =>
                               prevOptions.map((item, i) => ( { ...item, Labeloptionstate: false } ) ) 
                             );
@@ -231,7 +231,7 @@ function Notecard() {
                               />
                             </div>
                             {labelCollection.length > 0 && (
-                              <div className='border-0 flex flex-col mb-3'>
+                              <div className='border-0 flex flex-col mb-0'>
                                 {labelCollection.map((currentLabel, index) => (
                                   <div key={index} className="flex items-center gap-2 border-0 h-[35px] hover:bg-[#dbd7d5] transition duration-500 px-3 relative">
                                     <input
@@ -257,26 +257,31 @@ function Notecard() {
                                 }
                               </div>
                             )}
-                            <button 
-                              className='border-2 mt-5 hover:border-amber-600'
-                              onClick={(e) => {
-                                e.preventDefault();
-                                currentNote.MyLabel = noteLabel;
-                                currentNote.MyColor = noteColor;
-                                setLabelCollection((prev) => (
-                                  noteLabel && !prev.some((item) => item.LabelName === noteLabel)
-                                    ? [...prev, { LabelName: noteLabel, LabelColor: noteColor }]
-                                    : prev
-                                ));
-                                setShowEachLabelOptions((prevOptions) =>
-                                  prevOptions.map((item, i) => ( { ...item, Labeloptionstate: false } ) ) 
-                                );
-                                setNoteLabel('');
-                                setNoteColor('#172554')
-                              }}
-                            >
-                              click Me
-                            </button>
+                            <div className='flex justify-center'>
+                              <button 
+                                className=" w-[70px] h-[25px] my-2 bg-gradient-to-t from-gray-300 via-white to-gray-100 
+                                  border border-blue-950 rounded-xl font-semibold text-blue-850 hover:text-[#245F73] text-sm shadow-sm 
+                                  transition-all duration-200 ease-in-out
+                                  hover:shadow-md hover:border-gray-500 "
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  currentNote.MyLabel = noteLabel;
+                                  currentNote.MyColor = noteColor;
+                                  setLabelCollection((prev) => (
+                                    noteLabel && !prev.some((item) => item.LabelName === noteLabel)
+                                      ? [...prev, { LabelName: noteLabel, LabelColor: noteColor }]
+                                      : prev
+                                  ));
+                                  setShowEachLabelOptions((prevOptions) =>
+                                    prevOptions.map((item, i) => ( { ...item, Labeloptionstate: false } ) ) 
+                                  );
+                                  setNoteLabel('');
+                                  setNoteColor('#172554')
+                                }}
+                              >
+                                Save
+                              </button>
+                            </div>
                           </div>
                         )
                       }

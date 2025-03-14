@@ -223,7 +223,9 @@ function AddNotes({MyNote}) {
             {/* Note options when Triple Dot clicked */}
             {
               showNoteoptions && (
-                <NoteFeatures sm_right='1' sm_top='7' right='1' top='7' width='200'/>
+                <div className='absolute right-1 top-7 sm:w-[200px] w-[200px]'>
+                  <NoteFeatures MyIndex={null} showAllFeatures={false} />
+                </div>
               )
             }
             {/* Label options when Add Label Clicked */}

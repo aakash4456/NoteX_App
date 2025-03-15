@@ -1,3 +1,4 @@
+
 .custom-shadow {
     transition: 0.3s ease-in-out;
     box-shadow: 5px 5px 15px 1px rgba(91, 64, 64, 0.15),
@@ -12,10 +13,6 @@
     box-shadow: 5px 5px 15px 1px rgba(91, 64, 64, 0.15),
                 -5px 5px 15px 1px rgba(91, 64, 64, 0.15);
 }
-/* .NoteCard-shadow:hover {
-    box-shadow: 5px 5px 15px 1px rgba(201, 200, 199), 
-                -5px 5px 15px 1px rgba(201, 200, 199);
-} */
 
 .word-spacing-custom {
     word-spacing: 15px; /* Adjust as needed */

@@ -8,7 +8,6 @@ function ToDoContextProvider ({children}) {
     const storeLabels = "LabelCollection"
 
     const [showCreatingNote, setShowCreatingNote] = useState(false);
-    const [showNoteCard, setShowNoteCard] = useState(true);
     const [boldtext, setBoldtext] = useState(false);
     const [italicText, setItalicText] = useState(false);
     const [underlineText, setUnderlineText] = useState(false);
@@ -110,7 +109,6 @@ function ToDoContextProvider ({children}) {
     <ToDoContext.Provider
         value ={{ showCreatingNote, setShowCreatingNote,
                 notesCollection, setNotesCollection,
-                showNoteCard, setShowNoteCard,
                 DateNow, setDateNow,
                 boldtext, setBoldtext,
                 italicText, setItalicText,

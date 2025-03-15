@@ -1,22 +1,21 @@
 import { useState } from 'react'
 import './App.css'
 import ToDoContextProvider from './Contexts/ToDoContextProvider';
-import ToDoDashBoard from './Components/ToDoDashBoard';
+import { Outlet } from 'react-router'
+import MyNotes from './Components/MyNotes';
 import NavBar from './Components/NavBar';
+import Footer from './Components/Footer';
+import Home from './Components/Home';
 
 function App() {
 
   return (
     <>
-      <NavBar />
-      <div className='w-full text-center flex justify-center'>
-        <p className='sm:w-[60vw] w-[80vw] sm:m-15 m-10 md:text-5xl sm:text-4xl text-2xl font-medium font-ubuntu word-spacing-custom'>
-          Capture your thoughts, organize with ease, and bring your ideas to life.
-        </p>
+      <div className="min-h-screen flex flex-col">
+        <NavBar />
+        <Outlet className="flex-grow"/>
+        <Footer />
       </div>
-      <ToDoContextProvider>
-        <ToDoDashBoard />
-      </ToDoContextProvider>
     </>
   );
 }

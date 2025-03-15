@@ -17,7 +17,6 @@ function AddNotes({MyNote}) {
   const { 
     setShowCreatingNote,
     notesCollection, setNotesCollection,
-    setShowNoteCard,
     DateNow, setDateNow,
     boldtext, setBoldtext,
     italicText, setItalicText,
@@ -162,7 +161,6 @@ function AddNotes({MyNote}) {
     setNoteLabel('');
     setNoteColor('#172554')
     setShowLabelOptions(false);
-    setShowNoteCard(true);
     // Delay closing to allow state update to close AddNote
     setTimeout(() => {
       setEditcurNote('');

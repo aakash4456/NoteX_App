@@ -7,6 +7,9 @@ import Home from './Components/Home.jsx'
 import ToDoContextProvider from './Contexts/ToDoContextProvider.jsx'
 import MyNotes from './Components/MyNotes.jsx'
 import MyToDos from './Components/MyToDos.jsx'
+import ForToDos_ContextProvider from './Contexts/ForToDos_ContextProvider.jsx'
+import ToDoAddTask from './Components/ToDoAddTask.jsx'
+import ToDoTaskList from './Components/ToDoTaskList.jsx'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -14,9 +17,10 @@ const router = createBrowserRouter(
       <Route path='' element={<Home />}/>
       <Route
         path='myNotes'
-        element={<ToDoContextProvider>  <MyNotes />  </ToDoContextProvider>}
-      />
-      <Route path='myToDos' element = {<MyToDos />} />
+        element={<ToDoContextProvider>  <MyNotes />  </ToDoContextProvider>} />
+      <Route
+        path='myToDos'
+        element = { <ForToDos_ContextProvider> <MyToDos /> </ForToDos_ContextProvider> } />
     </Route>
   )
 )

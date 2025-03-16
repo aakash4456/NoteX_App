@@ -10,20 +10,32 @@ import MyToDos from './Components/MyToDos.jsx'
 import ForToDos_ContextProvider from './Contexts/ForToDos_ContextProvider.jsx'
 import ToDoAddTask from './Components/ToDoAddTask.jsx'
 import ToDoTaskList from './Components/ToDoTaskList.jsx'
+import { createHashRouter } from 'react-router-dom';
 
-const router = createBrowserRouter(
+// const router = createBrowserRouter(
+//   createRoutesFromElements(
+//     <Route path='/' element={<App />}>
+//       <Route path='' element={<Home />}/>
+//       <Route
+//         path='myNotes'
+//         element={<ToDoContextProvider>  <MyNotes />  </ToDoContextProvider>} />
+//       <Route
+//         path='myToDos'
+//         element = { <ForToDos_ContextProvider> <MyToDos /> </ForToDos_ContextProvider> } />
+//     </Route>
+//   )
+// )
+
+
+const router = createHashRouter(
   createRoutesFromElements(
     <Route path='/' element={<App />}>
-      <Route path='' element={<Home />}/>
-      <Route
-        path='myNotes'
-        element={<ToDoContextProvider>  <MyNotes />  </ToDoContextProvider>} />
-      <Route
-        path='myToDos'
-        element = { <ForToDos_ContextProvider> <MyToDos /> </ForToDos_ContextProvider> } />
+      <Route path='' element={<Home />} />
+      <Route path='myNotes' element={<ToDoContextProvider> <MyNotes /> </ToDoContextProvider>} />
+      <Route path='myToDos' element={<ForToDos_ContextProvider> <MyToDos /> </ForToDos_ContextProvider>} />
     </Route>
   )
-)
+);
 
 
 createRoot(document.getElementById('root')).render(

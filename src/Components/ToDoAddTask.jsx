@@ -2,7 +2,6 @@ import React from 'react'
 import { useContext } from 'react';
 import ForToDos_Context from '../Contexts/ForToDos_Context';
 
-
 function ToDoAddTask() {
     const {inputValue, setInputValue, btnHandler} = useContext(ForToDos_Context);
     

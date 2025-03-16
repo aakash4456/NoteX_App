@@ -1,12 +1,10 @@
 import React from 'react';
-import { FaFacebook, FaLinkedin } from "react-icons/fa";
-import { SiInstagram } from "react-icons/si";
+import { FaLinkedin } from "react-icons/fa";
 import { IoMdMailUnread } from "react-icons/io";
 import { FaSquareGithub } from "react-icons/fa6";
 
 function Footer() {
     return (
-        // <footer className="w-full bg-white border-t-3 border-t-blue-950 py-4 mt-auto">
         <footer className="w-full bg-white py-4 mt-auto">
             {/* Social Icons */}
             <ul className="flex justify-center gap-6 text-2xl text-gray-500">

@@ -5,7 +5,6 @@ import { LuFolderPen } from "react-icons/lu";
 import AddNotes from './AddNotes';
 import Notecard from './Notecard';
 
-
 function MyNotes() {
   const {
     notesCollection,

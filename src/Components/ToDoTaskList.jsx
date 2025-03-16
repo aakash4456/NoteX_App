@@ -4,10 +4,9 @@ import { IoMdCheckmarkCircleOutline } from "react-icons/io";
 import { MdLeakRemove, MdOutlineDeleteForever } from "react-icons/md";
 import ForToDos_Context from '../Contexts/ForToDos_Context';
 
-
 function ToDoTaskList() {
     const {task, setTask} = useContext(ForToDos_Context);
-    
+
     // function to show that task has been done.
     const TaskDone = (eleId, taskName) => {
         const element1 = document.getElementById(eleId);
@@ -18,9 +17,6 @@ function ToDoTaskList() {
             element1.innerHTML = `${taskName}`
         }
     }
-    
-    
-
     // delete a single task from the ToDo List.
     const deletetask = (taskName) => {
         const newtask = task.filter((item) => (item !== taskName ));
@@ -74,4 +70,4 @@ function ToDoTaskList() {
     )
 }
 
-export default ToDoTaskList
+export default ToDoTaskList ;

@@ -1,13 +1,11 @@
 import React, { useState } from 'react'
 import { NavLink } from "react-router";
-
 import { IoIosMenu } from "react-icons/io";
 import { RxCross1 } from "react-icons/rx";
 import NoteXLogo from './NoteXLogo';
 
 function NavBar() {
     const [showMenu, setShowMenu] = useState(false);
-
     return (
     <>
         <div className='relative w-full h-[8vh] flex md:justify-around justify-between items-center bg-white sm:px-2'>
@@ -41,10 +39,6 @@ function NavBar() {
                             MyToDos
                         </NavLink>
                     </li>
-                    {/* <li className='cursor-pointer'>Contact Us</li>
-                    <li className='cursor-pointer'>Help</li>
-                    <li className='cursor-pointer'>Log In</li>
-                    <li className='cursor-pointer'>Sign Up</li> */}
                 </ul>
             </div>
             <div className="md:hidden relative w-10 h-10 flex justify-center items-center">
@@ -87,10 +81,6 @@ function NavBar() {
                     >
                         <li className='cursor-pointer rounded-xl h-[50px] pt-2 pl-2 hover:bg-[#dbd7d5] transition duration-300' > MyToDos </li>
                     </NavLink>
-                    {/* <li className='cursor-pointer rounded-xl h-[50px] pt-2 pl-2 hover:bg-[#dbd7d5] transition duration-300'>Contact Us</li>
-                    <li className='cursor-pointer rounded-xl h-[50px] pt-2 pl-2 hover:bg-[#dbd7d5] transition duration-300'>Help</li>
-                    <li className='cursor-pointer rounded-xl h-[50px] pt-2 pl-2 hover:bg-[#dbd7d5] transition duration-300'>Log In</li>
-                    <li className='cursor-pointer rounded-xl h-[50px] pt-2 pl-2 hover:bg-[#dbd7d5] transition duration-300'>Sign Up</li> */}
                 </ul>
             </div>
         )}

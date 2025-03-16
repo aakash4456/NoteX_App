@@ -31,12 +31,8 @@ function ToDoContextProvider ({children}) {
     const [notesCollection, setNotesCollection] = useState(() => {
         const RawData = localStorage.getItem(storeNotes);
         if(RawData === null){
-            // console.log("in if");
-            // console.log(RawData);
             return [];
         } else {
-            // console.log("in else");
-            // console.log(RawData);
             return JSON.parse(RawData) ;
         }
     });
@@ -45,12 +41,8 @@ function ToDoContextProvider ({children}) {
     const [labelCollection, setLabelCollection] = useState(() => {
         const RawData = localStorage.getItem(storeLabels);
         if(RawData === null){
-            // console.log("in if");
-            // console.log(RawData);
             return [];
         } else {
-            // console.log("in else");
-            // console.log(RawData);
             return JSON.parse(RawData) ;
         }
     });
@@ -58,14 +50,6 @@ function ToDoContextProvider ({children}) {
     // set data in localStorage on mount
     localStorage.setItem(storeNotes, JSON.stringify(notesCollection));
     localStorage.setItem(storeLabels, JSON.stringify(labelCollection));
-
-    const [taskCollection, settaskCollection] = useState([
-        {
-            id : 1,
-            ToDo : '',
-            Completed : false
-        }
-    ]);
 
     // creating references for each new created label.
     useEffect(() => {

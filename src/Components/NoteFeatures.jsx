@@ -49,7 +49,6 @@ function NoteFeatures({showAllFeatures=false, curtIndex=null, curtNote=null}) {
                                     className='cursor-pointer pl-3 hover:bg-[#dbd7d5] transition duration-500 rounded-xl h-[30px]'
                                     onClick={() => {
                                         console.log("i am make a copy");
-                                        // setNotesCollection((prev) => [...prev, curtNote]);
                                         setNotesCollection((prev) => [...prev, { ...curtNote, id: uuidv4() } ]);
                                         setShowEachNoteoptions((prevOptions) =>
                                             prevOptions.map((item, i) => ( { ...item, optionstate: false } ) )

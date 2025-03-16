@@ -6,7 +6,6 @@ import { FiEdit } from "react-icons/fi";
 import { RxCross2 } from "react-icons/rx";
 import NoteFeatures from './NoteFeatures';
 
-
 function Notecard() {
   const {
     notesCollection, setNotesCollection,

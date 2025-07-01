@@ -32,7 +32,7 @@
 ## 📁 Project Structure
 
 ```
-12-notestodo-app/
+NoteX_App/
 │── public/
 │   ├── NoteX_logo.webp      # App logo
 │   ├── vite.svg             # Vite default SVG
